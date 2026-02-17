@@ -7,6 +7,7 @@ Usage:
   uv run scripts/display.py --color red        # Show solid color
   uv run scripts/display.py --color "#00ff00"  # Show hex color
   uv run scripts/display.py --text "HI"        # Show text
+  uv run scripts/display.py --test-resolution  # Test 32/48/64 to find display size
 """
 
 import asyncio
@@ -21,8 +22,8 @@ DEVICE_NAME_PREFIX = "YS"
 WRITE_UUID = "0000fff2-0000-1000-8000-00805f9b34fb"
 NOTIFY_UUID = "0000fff1-0000-1000-8000-00805f9b34fb"
 
-# Display is 32x32 (confirmed working)
-DISPLAY_SIZE = 32
+# Display is 64x64 (confirmed via --test-resolution)
+DISPLAY_SIZE = 64
 
 # Protocol constants (reverse-engineered from ATOTOZONE-family protocol)
 CONST_SEQ = bytes.fromhex("c1020901010c01000d01000e0100140301090a11040001000a1207")
@@ -148,6 +149,91 @@ def make_text_image(text: str) -> Image.Image:
     return img
 
 
+def make_resolution_grid(size: int) -> Image.Image:
+    """Create a grid pattern labeled with the resolution size."""
+    img = Image.new("RGB", (size, size), (0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # White 1px grid lines every 8 pixels
+    for i in range(0, size, 8):
+        draw.line([(i, 0), (i, size - 1)], fill=(255, 255, 255), width=1)
+        draw.line([(0, i), (size - 1, i)], fill=(255, 255, 255), width=1)
+
+    # Draw resolution number in top-left corner with black background for readability
+    label = str(size)
+    font_size = max(8, size // 4)
+    try:
+        font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", font_size)
+    except Exception:
+        font = ImageFont.load_default()
+
+    bbox = draw.textbbox((0, 0), label, font=font)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    # Black rectangle behind text
+    draw.rectangle([(1, 1), (tw + 4, th + 4)], fill=(0, 0, 0))
+    draw.text((2, 2), label, fill=(255, 255, 255), font=font)
+
+    return img
+
+
+def image_to_gif_at_size(img: Image.Image, size: int) -> bytes:
+    """Convert image to GIF bytes at a specific size (ignoring DISPLAY_SIZE)."""
+    img = img.convert("RGB").resize((size, size), Image.LANCZOS)
+    buf = BytesIO()
+    img.save(buf, format="GIF")
+    return buf.getvalue()
+
+
+async def send_image_data(client: BleakClient, gif_data: bytes, label: str):
+    """Send GIF data to the backpack (shared logic)."""
+    chunk_size = 196
+    num_chunks = (len(gif_data) + chunk_size - 1) // chunk_size
+    print(f"{label}: GIF {len(gif_data)} bytes, {num_chunks} chunk(s)")
+
+    await send_wait(client, READY)
+
+    for idx in range(num_chunks):
+        chunk = gif_data[idx * chunk_size : (idx + 1) * chunk_size]
+        pkt = build_image_chunk(idx, chunk, num_chunks)
+        status = await send_wait(client, pkt)
+        if status != 0:
+            print(f"  Warning: chunk {idx} status={status}")
+        await asyncio.sleep(0.3)
+
+    await send_wait(client, FINALIZE)
+
+
+async def test_resolution(test_sizes: list[int] = [32, 48, 64]):
+    """Send grid patterns to determine display resolution."""
+
+    print("Scanning for backpack...")
+    device = await BleakScanner.find_device_by_filter(
+        lambda d, adv: (adv.local_name or "").startswith(DEVICE_NAME_PREFIX),
+        timeout=10,
+    )
+    if not device:
+        print("Backpack not found! Is it powered on?")
+        return
+
+    print(f"Found: {device.name}")
+
+    async with BleakClient(device) as client:
+        await client.start_notify(NOTIFY_UUID, notification_handler)
+        print(f"Connected (MTU: {client.mtu_size})")
+
+        for size in test_sizes:
+            grid = make_resolution_grid(size)
+            gif_data = image_to_gif_at_size(grid, size)
+            await send_image_data(client, gif_data, f"Testing {size}x{size}")
+            print(f"\n>>> Sent {size}x{size} grid. Look at the backpack!")
+            print(f"    Does it show a clean grid with \"{size}\" in the corner?")
+            input("    Press Enter to try next size... ")
+
+        await client.stop_notify(NOTIFY_UUID)
+
+    print("\nDone! Update DISPLAY_SIZE in display.py to the size that looked correct.")
+
+
 async def display_image(img: Image.Image):
     """Send image to the backpack."""
     gif_data = image_to_gif(img)
@@ -193,6 +279,11 @@ async def display_image(img: Image.Image):
 def main():
     args = sys.argv[1:]
 
+    if args and args[0] == "--test-resolution":
+        sizes = [int(s) for s in args[1:]] if len(args) > 1 else [32, 48, 64]
+        asyncio.run(test_resolution(sizes))
+        return
+
     if not args:
         img = make_test_pattern()
         print("Displaying rainbow test pattern")
@@ -213,4 +304,5 @@ def main():
     asyncio.run(display_image(img))
 
 
-main()
+if __name__ == "__main__":
+    main()

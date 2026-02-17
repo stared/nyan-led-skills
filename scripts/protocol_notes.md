@@ -1,7 +1,10 @@
 # Nyan Gear BLE Protocol — Fully Reverse-Engineered
 
 ## Device Info
-- **Device name**: YS5257111003 (prefix: "YS")
+- **Manufacturer**: Shenzhen Yanse Technology
+- **Protocol family**: ATOTOZONE-family (reverse-engineered from OverScore article)
+- **Device name pattern**: "YS*" (e.g. YS5257111003)
+- **Display resolution**: 64x64 pixels (confirmed via grid test pattern)
 - **BLE Service**: 0000fff0-0000-1000-8000-00805f9b34fb
 - **Write characteristic**: 0000fff2 (write-without-response)
 - **Notify characteristic**: 0000fff1 (notifications/ACKs)
@@ -62,7 +65,7 @@ aa55XXXX 07 00 <echo_idx> 00 81 82 <status> <chk_lo> <chk_hi>
 3. Send FINALIZE
 
 ## Image format
-- GIF format, resized to 32x32 pixels
+- GIF format, resized to 64x64 pixels
 - Split into 196-byte chunks
 - Each chunk wrapped in protocol packet (243 bytes each)
 - Wait for ACK (OK status) before sending next chunk
