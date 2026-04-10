@@ -58,6 +58,14 @@ No prior public RE existed for this device. The protocol was cracked through:
 - Is there a "read current image" command?
 - The `81c4` payload length marker — what does it encode?
 
+## Demos
+
+The `scripts/` directory contains themed animations vibe-coded with Claude Code:
+
+- `pycon_lithuania_2026.py` — Lithuanian aurora with a slithering Python snake, live-coded during [Vibe reverse engineering of old games and new hardware](https://pycon.lt/2026/talks/HLCPZ9) at [PyCon Lithuania 2026](https://pycon.lt/2026)
+- `ai_breakfast_warsaw.py` — coffee cup with rising steam, for [AI Breakfast Warsaw](https://luma.com/warsaw-ai-breakfast)
+- `womens_day.py` — floating hearts, bouncing text, tulips (`--for Name` to personalize)
+
 ## Useful references
 
 - [OverScore Media: Reverse Engineering a BLE LED Matrix](https://overscore.media/posts/series/matthews-machinations/reverse-engineering-a-ble-led-matrix) — closest protocol documentation (ATOTOZONE CI-VIALD19), same `aa55ffff` packet family
