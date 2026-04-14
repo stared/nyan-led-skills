@@ -65,6 +65,7 @@ The `scripts/` directory contains themed animations vibe-coded with Claude Code:
 - `pycon_lithuania_2026.py` — Lithuanian aurora with a slithering Python snake, live-coded during [Vibe reverse engineering of old games and new hardware](https://pycon.lt/2026/talks/HLCPZ9) at [PyCon Lithuania 2026](https://pycon.lt/2026)
 - `ai_breakfast_warsaw.py` — coffee cup with rising steam, for [AI Breakfast Warsaw](https://luma.com/warsaw-ai-breakfast)
 - `womens_day.py` — floating hearts, bouncing text, tulips (`--for Name` to personalize)
+- `to_err_is_ai.py` — blue grid with "To err is ~~human~~ AI" strikethrough reveal, glitching robot, and K3/Quesma branding, for [K3 Sessions: To Err is AI](https://luma.com/m0bse8um)
 
 ## Useful references
 
