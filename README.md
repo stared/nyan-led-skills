@@ -66,7 +66,7 @@ The `scripts/` directory contains themed animations vibe-coded with Claude Code:
 - `ai_breakfast_warsaw.py` — coffee cup with rising steam, for [AI Breakfast Warsaw](https://luma.com/warsaw-ai-breakfast)
 - `womens_day.py` — floating hearts, bouncing text, tulips (`--for Name` to personalize)
 - `to_err_is_ai.py` — blue grid with "To err is ~~human~~ AI" strikethrough reveal, glitching robot, and K3/Quesma branding, for [K3 Sessions: To Err is AI](https://luma.com/m0bse8um)
-- `fundusz_zdolni.py` — starry sky with rotating spotlight across five discipline icons (π / atom / flask / DNA / music) and a scrolling "BUDZIMY CIEKAWOSC!" motto, for [Fundusz Zdolni](https://fundusz.org/) (formerly KFnrD) and the Falenty 2026 scientific camp
+- `fundusz_zdolni.py` — rotating spotlight across five discipline icons (π / atom / test tube / DNA / note) and a scrolling "BUDZIMY CIEKAWOSC!" motto, for the [Fundusz Zdolni](https://fundusz.org/) Falenty 2026 scientific camp for gifted high school students
 
 ## Useful references
 

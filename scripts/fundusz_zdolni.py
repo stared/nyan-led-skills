@@ -1,14 +1,7 @@
 """Fundusz Zdolni — Falenty 2026 animation for the Nyan Gear LED backpack.
 
-Curiosity-themed animation for Fundusz ZDOLNI (formerly Krajowy Fundusz na
-rzecz Dzieci, KFnrD; 1981-2024). The flagship event is a ~10-day general
-scientific camp in Falenty bringing together Polish high-school scholarship
-holders across mathematics, physics, chemistry, biology, music, and the
-humanities. Motto: "Budzimy ciekawosc!" (We awaken curiosity!).
-
-The animation rotates a spotlight across five discipline icons on a starry
-sky, under "FUNDUSZ ZDOLNI" branding with "FALENTY 2026" subtitle and a
-scrolling motto.
+Five discipline icons (math, physics, chemistry, biology, music) rotate under
+a spotlight on a starry sky, with a scrolling "Budzimy ciekawosc!" motto.
 
 Usage:
   uv run scripts/fundusz_zdolni.py             # send to backpack
@@ -84,12 +77,12 @@ ICON_ATOM = [
     "..#..",
 ]
 
-ICON_FLASK = [
-    ".###.",
-    "..#..",
-    "..#..",
-    ".###.",
-    ".###.",
+ICON_TUBE = [
+    "#...#",
+    "#...#",
+    "#...#",
+    "#####",
+    "#####",
     "#####",
     ".###.",
 ]
@@ -114,7 +107,7 @@ ICON_NOTE = [
     "##...",
 ]
 
-ICONS = [ICON_PI, ICON_ATOM, ICON_FLASK, ICON_DNA, ICON_NOTE]
+ICONS = [ICON_PI, ICON_ATOM, ICON_TUBE, ICON_DNA, ICON_NOTE]
 ICON_CENTERS_X = [7, 20, 32, 44, 57]
 
 
