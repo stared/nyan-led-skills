@@ -67,6 +67,7 @@ The `scripts/` directory contains themed animations vibe-coded with Claude Code:
 - `womens_day.py` — floating hearts, bouncing text, tulips (`--for Name` to personalize)
 - `to_err_is_ai.py` — blue grid with "To err is ~~human~~ AI" strikethrough reveal, glitching robot, and K3/Quesma branding, for [K3 Sessions: To Err is AI](https://luma.com/m0bse8um)
 - `fundusz_zdolni.py` — rotating spotlight across five discipline icons (π / atom / test tube / DNA / note) and a scrolling "BUDZIMY CIEKAWOSC!" motto, for the [Fundusz Zdolni](https://fundusz.org/) Falenty 2026 scientific camp for gifted high school students
+- `founder_house_stockholm.py`: 22 slow scenes (Anthropic's own AI-at-work study, an AI stuck in its sandbox, one scene per HN front-page post, `grep -c transcript`, "339 is not lagom", a fika permission prompt, ...) and a 6.5 minute `main` playlist for [Claude Founder House Stockholm](https://luma.com/h827z89v); storyboards and previews in [scripts/founder_house_stockholm/](scripts/founder_house_stockholm/README.md)
 
 ## Useful references
 
